@@ -43,7 +43,7 @@ cd frontitude-auto-export
 
 ## Screenshots
 
-![Popup UI](./screenshot.png)
+![Popup UI](./resources/frontitude_screenshot.png)
 
 ## Development
 

@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Frontitude Auto Exporter",
+  "version": "1.0",
+  "description": "Automate Frontitude project exports from Excel list",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "downloads",
+    "storage",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "action": {
+    "default_title": "Frontitude Auto Exporter"
+  },
+  "side_panel": {
+    "default_path": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}

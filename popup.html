@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      width: 360px;
+      min-height: 380px;
+      margin: 0;
+      padding: 0;
+      background: #181c24;
+      font-family: 'Inter', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #23262f;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(20, 22, 40, 0.18), 0 1.5px 4px rgba(30, 34, 90, 0.10);
+      padding: 32px 28px 24px 28px;
+      width: 100%;
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .log-section {
+      width: 100%;
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+    #log-container {
+      background: #181c24;
+      border: 1.5px solid #35394a;
+      border-radius: 8px;
+      min-height: 180px;
+      max-height: 240px;
+      overflow-y: auto;
+      font-size: 0.72rem;
+      color: #b0b8c1;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+      box-sizing: border-box;
+      transition: border 0.2s;
+    }
+    #clear-log-btn {
+      align-self: flex-end;
+      background: #35394a;
+      color: #b0b8c1;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 14px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 2px;
+      transition: background 0.2s, color 0.2s;
+    }
+    #clear-log-btn:hover {
+      background: #232946;
+      color: #38cfa6;
+    }
+    .logo {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+    }
+    h2 {
+      margin: 0 0 18px 0;
+      color: #f4f6fb;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-align: center;
+    }
+    .input-group {
+      width: 100%;
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-weight: 600;
+      color: #e0e3eb;
+      font-size: 0.98rem;
+    }
+    input[type="file"] {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1.5px solid #35394a;
+      border-radius: 8px;
+      background: #23262f;
+      color: #f4f6fb;
+      font-size: 1rem;
+      transition: border 0.2s, background 0.2s;
+    }
+    input[type="file"]:focus {
+      border-color: #38cfa6;
+      outline: none;
+      background: #232946;
+    }
+    button {
+      width: 100%;
+      padding: 12px 0;
+      background: linear-gradient(90deg, #38cfa6 0%, #4f8cff 100%);
+      color: #181c24;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.08rem;
+      font-weight: 600;
+      margin-top: 8px;
+      box-shadow: 0 2px 8px rgba(56, 207, 166, 0.10);
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background: linear-gradient(90deg, #4f8cff 0%, #38cfa6 100%);
+      box-shadow: 0 4px 16px rgba(79, 140, 255, 0.12);
+    }
+    button:disabled {
+      background: #35394a;
+      color: #7a7e8a;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    #status {
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      display: none;
+      width: 100%;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    .status-info {
+      background: #232946;
+      color: #38cfa6;
+      border: 1.5px solid #38cfa6;
+    }
+    .status-success {
+      background: #1e2b22;
+      color: #38cfa6;
+      border: 1.5px solid #38cfa6;
+    }
+    .status-error {
+      background: #2d1e1e;
+      color: #ff6b6b;
+      border: 1.5px solid #ff6b6b;
+    }
+    #progress {
+      margin-top: 10px;
+      font-size: 0.98rem;
+      color: #b0b8c1;
+      width: 100%;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="frontitude_icon.png" alt="Excel Icon" />
+    <h2>Frontitude Auto Exporter</h2>
+    <div class="input-group">
+      <label for="excelFile">Select Excel File</label>
+      <input type="file" id="excelFile" accept=".xlsx,.xls">
+    </div>
+    <div class="input-group" id="sheetSelectGroup" style="display:none;">
+      <label for="sheetSelect">Select Sheet</label>
+      <select id="sheetSelect"></select>
+    </div>
+    <button id="startBtn" disabled>Start Export</button>
+    <button id="forceStopBtn" style="margin-top:6px;background:#ff6b6b;color:#fff;font-weight:600;" type="button">Force Stop</button>
+    <div id="status"></div>
+    <div id="progress"></div>
+    <div class="log-section">
+      <div id="log-container"></div>
+      <button id="clear-log-btn" type="button">Clear log</button>
+    </div>
+  </div>
+  <script src="xlsx.full.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

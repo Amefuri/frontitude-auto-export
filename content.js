@@ -21,9 +21,13 @@ async function performExportSequence() {
     await clickJsonRadio();
     await wait(500);
 
+    // Step 3.5: Deselect specific checkbox
+    await deselectMetadataCheckbox();
+    await wait(250);
+
     // Step 4: Check "Include translation" checkbox
     await clickIncludeTranslation();
-    await wait(500);
+    await wait(250);
 
     // Step 5: Click final export button
     await clickExportAsJson();
@@ -58,6 +62,50 @@ async function clickJsonRadio() {
   }
   jsonRadio.click();
   console.log('Selected JSON format');
+}
+
+async function deselectMetadataCheckbox() {
+  // Look for the "Include metadata" text and find the associated checkbox
+  const labels = Array.from(document.querySelectorAll('*')).filter(el => 
+    el.textContent.includes('Include metadata') && 
+    el.children.length === 0 // Only text nodes, not parent containers
+  );
+  if (labels.length > 0) {
+    // Find the closest checkbox to this label
+    let current = labels[0];
+    while (current) {
+      const checkbox = current.querySelector('.checkbox.blue-theme');
+      if (checkbox) {
+        // Only click if it is selected
+        if (checkbox.classList.contains('selected')) {
+          checkbox.click();
+          console.log('Deselected the metadata checkbox');
+          return;
+        } else {
+          console.log('Metadata checkbox already deselected');
+          return;
+        }
+      }
+      current = current.parentElement;
+    }
+  }
+  // Fallback: try to find by looking for the checkbox near "Include metadata" text
+  const allElements = document.querySelectorAll('.checkbox.blue-theme');
+  for (let i = 0; i < allElements.length; i++) {
+    const elem = allElements[i];
+    const parent = elem.closest('*');
+    if (parent && parent.innerText.includes('Include metadata')) {
+      if (elem.classList.contains('selected')) {
+        elem.click();
+        console.log('Deselected the metadata checkbox (fallback)');
+        return;
+      } else {
+        console.log('Metadata checkbox already deselected (fallback)');
+        return;
+      }
+    }
+  }
+  console.warn('Metadata checkbox to deselect not found');
 }
 
 async function clickIncludeTranslation() {
